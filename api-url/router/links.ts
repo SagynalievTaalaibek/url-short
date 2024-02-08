@@ -1,7 +1,7 @@
 import express from "express";
 import Links from "../models/Links";
 
-const urlRouter = express.Router();
+const linksRouter = express.Router();
 
 const generateShortUrl = () => {
     const symbols = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -13,7 +13,7 @@ const generateShortUrl = () => {
     return shortUrl;
 }
 
-urlRouter.post('/', async (req, res, next) => {
+linksRouter.post('/', async (req, res, next) => {
     try {
         const {originalUrl} = req.body;
 
@@ -31,12 +31,20 @@ urlRouter.post('/', async (req, res, next) => {
     }
 });
 
-urlRouter.get('', (req, res, next) => {
+linksRouter.get('/:shortUrl', async (req, res, next) => {
     try {
-        res.send('Get');
+        const getShortUrl = req.params.shortUrl;
+
+        const link = await Links.findOne({shortUrl: getShortUrl});
+
+        if (!link) {
+           return res.status(404).send({error: 'Not found!'});
+        }
+
+        res.status(301).redirect(link.originalUrl);
     } catch (e) {
         next(e);
     }
 });
 
-export default urlRouter;
+export default linksRouter;
