@@ -23,11 +23,11 @@ const App = () => {
           <h4 className="my2">Your links look like this:</h4>
           <p>
             <a
-              href={selectLinks.shortUrl}
+              href={`http://localhost:8000/${selectLinks.shortUrl}`}
               className="link-underline-dark"
               target="_blank"
             >
-              {'http://localhost:8000/links/' + selectLinks.shortUrl}
+              {'http://localhost:8000/' + selectLinks.shortUrl}
             </a>
           </p>
         </div>
