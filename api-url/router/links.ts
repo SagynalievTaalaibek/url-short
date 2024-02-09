@@ -16,6 +16,16 @@ const generateShortUrl = () => {
 linksRouter.post('/', async (req, res, next) => {
     try {
         const {originalUrl} = req.body;
+        let urlShort: string;
+
+        while (true) {
+            urlShort = generateShortUrl();
+            const link = await Links.findOne({shortUrl: urlShort});
+
+            if (!link) {
+                break;
+            }
+        }
 
         const newLinks = {
             originalUrl,
